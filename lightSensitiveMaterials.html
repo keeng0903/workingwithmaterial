@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> bt3 - Light Sensitive Materials</title>
+    <script  type="text/javascript" src="./js/three.js"></script>
+</head>
+<body>
+    <script>
+        let scene, camera, renderer, cube, sphere, cone, plane;
+    
+        let createGeometry = function () {
+            let material = new THREE.MeshLambertMaterial({side: THREE.DoubleSide,color: 0x7fc5f9});
+    
+            let geometry = new THREE.BoxGeometry(3,3,3);
+            cube = new THREE.Mesh(geometry, material);
+            cube.position.x = -10;
+    
+            geometry = new THREE.SphereGeometry(5,30,30);
+            sphere = new THREE.Mesh(geometry, material);
+            sphere.position.x = 0;
+    
+            geometry = new THREE.ConeGeometry(3,4,20,1,true);
+            cone = new THREE.Mesh(geometry, material);
+            cone.position.x = 10;
+
+            geometry = new THREE.PlaneGeometry(1000, 1000, 50, 50);
+            material = new THREE.MeshBasicMaterial({
+                color: 0Xa6f995,
+                wireframe: true
+            });
+            plane = new THREE.Mesh(geometry, material);
+            plane.rotation.x = Math.PI / 2;
+            plane.position.y = -100;
+    
+            scene.add(cube);
+            scene.add(sphere);
+            scene.add(cone);
+            scene.add(plane);
+        };
+    
+        let init = function () {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffffff);
+    
+            camera = new THREE.PerspectiveCamera(75,
+                window.innerWidth / window.innerHeight,
+                1, 1000);
+            camera.position.z = 15;
+    
+            let directionalLightUp = new THREE.DirectionalLight(0xffffff);
+            scene.add(directionalLightUp);
+    
+            createGeometry();
+    
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+    
+            document.body.appendChild(renderer.domElement);
+        };
+    
+        let posnnumber = 0.02;
+        let mainLoop = function () {
+            cube.rotation.x += posnnumber;
+            cube.rotation.y += posnnumber;
+    
+            sphere.rotation.x -= posnnumber;
+            sphere.rotation.y -= posnnumber;
+    
+            cone.rotation.x -= posnnumber;
+            cone.rotation.y -= posnnumber;
+    
+            renderer.render(scene, camera);
+            requestAnimationFrame(mainLoop);
+        };
+    
+        init();
+        mainLoop();
+    </script>
+</body>
+</html>
